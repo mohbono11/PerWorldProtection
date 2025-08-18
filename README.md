@@ -1,4 +1,4 @@
-# PerWorldProtection Beta v1
+# PerWorldProtection (Beta v1)
 
 **PerWorldProtection** is a comprehensive world protection system for Minecraft servers using Skript. It allows server admins to control a wide range of actions in specific worlds or globally, ensuring gameplay balance and preventing griefing or unwanted interactions.
 
