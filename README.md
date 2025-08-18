@@ -26,6 +26,8 @@
   - Kick players on repeated violations
   - Whitelist specific blocks or entities
 
+
+Future updates may include fire spread protection and more advanced features.
 ---
 
 ## Configuration
@@ -58,3 +60,41 @@ whitelisted-entities: "example", "another_example"
 
 no-permission-message: "&cYou don't have permission to do that in this world!"
 admin-notification: "&7[PWP] &e{player} &7tried to &c{action} &7in world &b{world}"
+```
+---
+
+## Commands
+
+- `/perworldprotection` or `/pwp`: Display plugin information, including version, author, and description.
+- `/pwp reload`: Reload the script configuration (requires `perworldprotection.admin` permission).
+
+---
+
+## Permissions
+
+- `perworldprotection.admin`: Allows access to admin commands like reload.
+- `perworldprotection.notify`: Receive notifications of violations.
+- `perworldprotection.bypass`: Bypass all world protections.
+- `perworldprotection.bypass.<world>`: Bypass protections for a specific world.
+
+---
+
+## Installation
+
+1. Place `PerWorldProtection.sk` in your `plugins/Skript/scripts/` folder.
+2. Reload Skript or the individual script using `/sk reload PerWorldProtection`.
+3. Configure `options:` according to your server needs.
+
+---
+
+## Notes
+
+- This script is in **Beta v1**. Always backup your server before using.
+- Modifying anything below the options section is **not recommended** unless you know what you are doing.
+- Future updates may include fire spread protection and more advanced features.
+
+---
+
+**Author:** ihatemustard  
+**Version:** Beta v1
+
