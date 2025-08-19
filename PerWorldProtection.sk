@@ -31,13 +31,13 @@ options:
     protection-radius: 0  # 0 = disabled, >0 = protect X blocks around spawn
     
     # Whitelist certain blocks from protection 
-    whitelisted-blocks: "crafting_table" and "furnace" and "chest"
+    whitelisted-blocks: "example" and "another_example"
     
     # Whitelist certain entities from damage protection
-    whitelisted-entities: "item" and "experience_orb"
+    whitelisted-entities: "example" and "another_example"
     
     # Blacklisted items (cannot be used in protected worlds)
-    blacklisted-items: "tnt" and "flint_and_steel"
+    blacklisted-items: "example" and "another_example"
     
     # Custom messages
     no-permission-message: "&cYou don't have permission to do that in this world!"
