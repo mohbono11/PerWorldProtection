@@ -94,12 +94,6 @@ admin-notification: "&7[PWP] &e{player} &7tried to &c{action} &7in world &b{worl
 
 ## Notes
 
-- This script is in **Beta v1**. Always backup your server before using.
+- This script is in **Beta**. Always backup your server before using.
 - Modifying anything below the options section is **not recommended** unless you know what you are doing.
 - Future updates may include fire spread protection and more advanced features.
-
----
-
-**Author:** ihatemustard  
-**Version:** Beta v1
-
