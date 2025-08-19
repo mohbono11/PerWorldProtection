@@ -1,8 +1,8 @@
-# PerWorldProtection Beta v1
+# PerWorldProtection Beta v2
 
 options:
     # List of protected worlds (case sensitive) - leave empty to protect all worlds
-    protected-worlds: "example", "another_example"
+    protected-worlds: "example" and "another_example"
     
     # Feature toggles - set to true/false
     block-break: true
@@ -18,22 +18,31 @@ options:
     mob-spawning: false
     explosions: true
     liquid-flow: false
+    fire-spread: true
+    leaf-decay: false
+    crop-trample: true
+    enderman-grief: true
     
     # Advanced options
     enable-logging: false
     notify-admins: false
     kick-on-violation: false
     kick-violations-limit: 50
+    protection-radius: 0  # 0 = disabled, >0 = protect X blocks around spawn
     
     # Whitelist certain blocks from protection 
-    whitelisted-blocks: "example", "another_example"
+    whitelisted-blocks: "crafting_table" and "furnace" and "chest"
     
     # Whitelist certain entities from damage protection
-    whitelisted-entities: "example", "another_example"
+    whitelisted-entities: "item" and "experience_orb"
+    
+    # Blacklisted items (cannot be used in protected worlds)
+    blacklisted-items: "tnt" and "flint_and_steel"
     
     # Custom messages
     no-permission-message: "&cYou don't have permission to do that in this world!"
     admin-notification: "&7[PWP] &e{player} &7tried to &c{action} &7in world &b{world}"
+    blacklisted-item-message: "&cYou cannot use that item in this world!"
 
 # ============================================================================
 # DO NOT CHANGE ANYTHING BEYOND THIS POINT UNLESS YOU KNOW WHAT YOU ARE DOING.
@@ -46,18 +55,28 @@ command /perworldprotection [<text>]:
     trigger:
         if arg-1 is not set:
             send "&8---- &cPer&eWor&aldP&brot&9ect&dion &8----"
-            send "&7Version: &eBeta v1"
+            send "&7Version: &eBeta v2"
             send "&7Author: &eihatemustard"
             send "&7Description: &fComprehensive world protection system"
             send "&7Commands:"
             send "&8  - &e/pwp reload &7- Reload configuration"
+            send "&8  - &e/pwp status &7- Check protection status"
         if arg-1 is "reload":
             if player has permission "perworldprotection.admin":
                 set {_scriptName} to name of script
                 execute console command "sk reload %{_scriptName}%"
-                send "&aReloaded!"
+                send "&aConfiguration reloaded successfully!"
             else:
                 send "&cYou don't have permission to do that!"
+        if arg-1 is "status":
+            send "&7Current world: &e%world of player%"
+            if isWorldProtected(world of player) is true:
+                send "&7Protection status: &cEnabled"
+                if {@protection-radius} is greater than 0:
+                    set {_radius} to {@protection-radius}
+                    send "&7Spawn protection radius: &e%{_radius}% blocks"
+            else:
+                send "&7Protection status: &aDisabled"
 
 # Function to check if world is protected
 function isWorldProtected(w: world) :: boolean:
@@ -72,6 +91,30 @@ function isWorldProtected(w: world) :: boolean:
 function isBlockWhitelisted(b: block) :: boolean:
     set {_blockType} to "%type of {_b}%"
     if "%{@whitelisted-blocks}%" contains {_blockType}:
+        return true
+    return false
+
+# Function to check if entity is whitelisted
+function isEntityWhitelisted(e: entity) :: boolean:
+    set {_entityType} to "%type of {_e}%"
+    if "%{@whitelisted-entities}%" contains {_entityType}:
+        return true
+    return false
+
+# Function to check if item is blacklisted
+function isItemBlacklisted(i: item) :: boolean:
+    set {_itemType} to "%type of {_i}%"
+    if "%{@blacklisted-items}%" contains {_itemType}:
+        return true
+    return false
+
+# Function to check spawn protection radius
+function isInSpawnRadius(loc: location) :: boolean:
+    if {@protection-radius} is less than or equal to 0:
+        return false
+    set {_spawn} to spawn of world of {_loc}
+    set {_distance} to distance between {_loc} and {_spawn}
+    if {_distance} is less than or equal to {@protection-radius}:
         return true
     return false
 
@@ -99,6 +142,13 @@ on break:
         if isWorldProtected(world of event-block) is true:
             if player doesn't have permission "perworldprotection.bypass":
                 if player doesn't have permission "perworldprotection.bypass.%world of event-block%":
+                    if isInSpawnRadius(location of event-block) is true:
+                        if player doesn't have permission "perworldprotection.bypass.spawn":
+                            cancel event
+                            send "&cYou cannot break blocks near spawn!" to player
+                            notifyViolation(player, "break blocks near spawn", world of event-block)
+                            handleViolation(player)
+                            stop
                     cancel event
                     send {@no-permission-message} to player
                     notifyViolation(player, "break blocks", world of event-block)
@@ -110,6 +160,13 @@ on place:
         if isWorldProtected(world of event-block) is true:
             if player doesn't have permission "perworldprotection.bypass":
                 if player doesn't have permission "perworldprotection.bypass.%world of event-block%":
+                    if isInSpawnRadius(location of event-block) is true:
+                        if player doesn't have permission "perworldprotection.bypass.spawn":
+                            cancel event
+                            send "&cYou cannot place blocks near spawn!" to player
+                            notifyViolation(player, "place blocks near spawn", world of event-block)
+                            handleViolation(player)
+                            stop
                     cancel event
                     send {@no-permission-message} to player
                     notifyViolation(player, "place blocks", world of event-block)
@@ -117,6 +174,18 @@ on place:
 
 # Right-click interaction protection
 on right click:
+    # Check for blacklisted items
+    if player's tool is set:
+        if isItemBlacklisted(player's tool) is true:
+            if isWorldProtected(world of player) is true:
+                if player doesn't have permission "perworldprotection.bypass":
+                    if player doesn't have permission "perworldprotection.bypass.%world of player%":
+                        cancel event
+                        send {@blacklisted-item-message} to player
+                        notifyViolation(player, "use blacklisted item", world of player)
+                        handleViolation(player)
+                        stop
+    
     if {@block-interact} is true:
         if isWorldProtected(world of player) is true:
             if player doesn't have permission "perworldprotection.bypass":
@@ -133,10 +202,11 @@ on right click:
             if player doesn't have permission "perworldprotection.bypass":
                 if player doesn't have permission "perworldprotection.bypass.%world of player%":
                     if clicked entity is set:
-                        cancel event
-                        send {@no-permission-message} to player
-                        notifyViolation(player, "interact with entities", world of player)
-                        handleViolation(player)
+                        if isEntityWhitelisted(clicked entity) is false:
+                            cancel event
+                            send {@no-permission-message} to player
+                            notifyViolation(player, "interact with entities", world of player)
+                            handleViolation(player)
 
 # Left-click interaction protection
 on left click:
@@ -145,10 +215,11 @@ on left click:
             if clicked entity is set:
                 if player doesn't have permission "perworldprotection.bypass":
                     if player doesn't have permission "perworldprotection.bypass.%world of player%":
-                        cancel event
-                        send {@no-permission-message} to player
-                        notifyViolation(player, "attack entities", world of player)
-                        handleViolation(player)
+                        if isEntityWhitelisted(clicked entity) is false:
+                            cancel event
+                            send {@no-permission-message} to player
+                            notifyViolation(player, "attack entities", world of player)
+                            handleViolation(player)
 
 # Item drop protection
 on drop:
@@ -202,10 +273,11 @@ on damage:
                 if isWorldProtected(world of attacker) is true:
                     if attacker doesn't have permission "perworldprotection.bypass":
                         if attacker doesn't have permission "perworldprotection.bypass.%world of attacker%":
-                            cancel event
-                            send {@no-permission-message} to attacker
-                            notifyViolation(attacker, "damage entities", world of attacker)
-                            handleViolation(attacker)
+                            if isEntityWhitelisted(victim) is false:
+                                cancel event
+                                send {@no-permission-message} to attacker
+                                notifyViolation(attacker, "damage entities", world of attacker)
+                                handleViolation(attacker)
 
 # Bucket usage protection
 on bucket fill:
@@ -241,7 +313,40 @@ on explode:
         if isWorldProtected(world of event-entity) is true:
             cancel event
 
-# Fire spread protection (SOON)
+# Fire spread protection
+on ignite:
+    if {@fire-spread} is true:
+        if isWorldProtected(world of event-block) is true:
+            cancel event
+
+on burn:
+    if {@fire-spread} is true:
+        if isWorldProtected(world of event-block) is true:
+            cancel event
+
+# Leaf decay protection
+on leaves decay:
+    if {@leaf-decay} is true:
+        if isWorldProtected(world of event-block) is true:
+            cancel event
+
+# Crop trampling protection
+on step on farmland:
+    if {@crop-trample} is true:
+        if isWorldProtected(world of event-block) is true:
+            if player doesn't have permission "perworldprotection.bypass":
+                if player doesn't have permission "perworldprotection.bypass.%world of event-block%":
+                    cancel event
+                    send {@no-permission-message} to player
+                    notifyViolation(player, "trample crops", world of event-block)
+                    handleViolation(player)
+
+# Enderman grief protection
+on pick up:
+    if {@enderman-grief} is true:
+        if event-entity is an enderman:
+            if isWorldProtected(world of event-entity) is true:
+                cancel event
 
 # Liquid flow protection
 on flow:
@@ -249,6 +354,14 @@ on flow:
         if isWorldProtected(world of event-block) is true:
             cancel event
 
-# Player join - reset violation counter
+# Player join - reset violation counter and welcome message
 on join:
     delete {pwp.violations.%player%}
+    if isWorldProtected(world of player) is true:
+        wait 2 seconds
+        send "&7[PWP] Welcome to a protected world! Type &e/pwp status &7for info." to player
+
+# Player world change - notify if entering protected world
+on world change:
+    if isWorldProtected(event-world) is true:
+        send "&7[PWP] You have entered a protected world: &e%event-world%" to player
