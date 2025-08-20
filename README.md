@@ -35,31 +35,50 @@ Future updates may include fire spread protection and more advanced features.
 All options are configurable via the `options:` section:
 
 ```
-protected-worlds: "example", "another_example" # Worlds to protect (case sensitive)
-block-break: true
-block-place: true
-block-interact: true
-entity-interact: true
-entity-damage: true
-item-drop: true
-item-pickup: true
-inventory-access: true
-bucket-usage: true
-pvp: true
-mob-spawning: false
-explosions: true
-liquid-flow: false
+options:
+    # List of protected worlds (case sensitive) - leave empty to protect all worlds
+    protected-worlds: "example,another_example"
+    
+    # List of spawn-only protected worlds (case sensitive) - only spawn radius protection
+    spawn-protected-worlds: "example,another_example"
+    protection-radius: 0  # 0 = disabled, >0 = protect X blocks around spawn
 
-enable-logging: false
-notify-admins: false
-kick-on-violation: false
-kick-violations-limit: 50
-
-whitelisted-blocks: "example", "another_example"
-whitelisted-entities: "example", "another_example"
-
-no-permission-message: "&cYou don't have permission to do that in this world!"
-admin-notification: "&7[PWP] &e{player} &7tried to &c{action} &7in world &b{world}"
+    # Feature toggles - set to true/false
+    block-break: true
+    block-place: true
+    block-interact: true
+    entity-interact: true
+    entity-damage: true
+    item-drop: true
+    item-pickup: true
+    inventory-access: true
+    bucket-usage: true
+    pvp: true
+    player-damage: true
+    mob-spawning: false
+    explosions: true
+    liquid-flow: false
+    fire-spread: true
+    leaf-decay: false
+    crop-trample: true
+    enderman-grief: true
+    
+    # Advanced options
+    enable-logging: false
+    notify-admins: false
+    kick-on-violation: false
+    kick-violations-limit: 50
+    
+    # Message options
+    welcome-message-enabled: true
+    no-permission-messages: true
+    
+    # Whitelist certain entities from damage protection (use minecraft IDs like "cow,pig,villager")
+    whitelisted-entities: " "
+    
+    # Custom messages
+    no-permission-message: "&7[PWP] &cYou don't have permission to do that in this world!"
+    admin-notification: "&7[PWP] &e{player} &7tried to &c{action} &7in world &b{world}"
 ```
 ---
 
