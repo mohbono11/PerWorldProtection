@@ -4,6 +4,22 @@ Donation Link: https://mc-host24.de/donate/craftingmanager
 
 **PerWorldProtection** is a comprehensive world protection system for Minecraft servers using Skript. It allows server admins to control a wide range of actions in specific worlds or globally, ensuring gameplay balance and preventing griefing or unwanted interactions.
 
+## v1 Pre-Release 1: Coming Soon
+
+This milestone update marks the point where the project finally becomes a fully usable and professional Skript. With this pre-release, it’s no longer just a concept.
+
+### What’s New
+
+- **Full YAML integration** – All settings are now cleanly managed through YAML files.  
+- **Per-world customization** – Every world can have its own unique protection setup.  
+- **Enhanced status command** – Instantly view world-specific settings and their current values.  
+- **Streamlined world management** – Create new configs effortlessly with a single command.  
+- **Additional protection features** – More world-protection options will be included to expand flexibility and security.
+
+This is the **biggest update yet**, setting the foundation for a stable and professional release.
+
+> ⚠️ Note: This pre-release is coming very soon, but it will probably not be released today as there are still a number of bugs being fixed to ensure the best possible experience.
+
 ## Features
 
 - **World Protection**: Protect specific worlds or all worlds by default.
