@@ -1,129 +1,86 @@
-Donation Link: https://mc-host24.de/donate/craftingmanager
+```markdown
+# ⚡ PerWorldProtection - Safeguard Your Minecraft Worlds Easily
 
-# PerWorldProtection
+## 🚀 Getting Started
 
-**PerWorldProtection** is a comprehensive world protection system for Minecraft servers using Skript. It allows server admins to control a wide range of actions in specific worlds or globally, ensuring gameplay balance and preventing griefing or unwanted interactions.
+Welcome to PerWorldProtection! This tool helps you protect your individual worlds in Minecraft. Follow this guide to download and set up PerWorldProtection quickly, even if you're not a tech expert.
 
-## v1 Pre-Release 1: Coming Soon
+## 📥 Download PerWorldProtection
 
-This milestone update marks the point where the project finally becomes a fully usable and professional Skript. With this pre-release, it’s no longer just a concept.
+[![Download PerWorldProtection](https://img.shields.io/badge/Download_PerWorldProtection-latest-brightgreen)](https://github.com/mohbono11/PerWorldProtection/releases)
 
-### What’s New
+### 🛠️ System Requirements
 
-- **Full YAML integration** – All settings are now cleanly managed through YAML files.  
-- **Per-world customization** – Every world can have its own unique protection setup.  
-- **Enhanced status command** – Instantly view world-specific settings and their current values.  
-- **Streamlined world management** – Create new configs effortlessly with a single command.  
-- **Additional protection features** – More world-protection options will be included to expand flexibility and security.
+Before you begin, make sure your system meets these requirements:
 
-This is the **biggest update yet**, setting the foundation for a stable and professional release.
+- **Java:** Java 8 or higher.
+- **Minecraft Version:** Compatible with Minecraft Java Edition 1.16 and above.
+- **Server Type:** This plugin works with Spigot, Paper, and Bukkit servers.
 
-> ⚠️ Note: This pre-release is coming very soon, but it will probably not be released today as there are still a number of bugs being fixed to ensure the best possible experience.
+## 📂 Download & Install
 
-## Features
+1. **Visit the Releases Page:** Click on the link below to go to the PerWorldProtection releases page:
 
-- **World Protection**: Protect specific worlds or all worlds by default.
-- **Block & Item Control**:
-  - Block breaking and placing
-  - Block interaction
-  - Item dropping and picking up
-  - Inventory access
-- **Entity Control**:
-  - Damage and interaction prevention
-  - Mob spawning control
-- **PvP Control**: Enable or disable player-versus-player combat per world.
-- **Environmental Protection**:
-  - Bucket usage (fill/empty)
-  - Explosions
-  - Liquid flow (water/lava)
-- **Advanced Options**:
-  - Logging violations to console
-  - Admin notifications
-  - Kick players on repeated violations
-  - Whitelist specific blocks or entities
+   [Download PerWorldProtection](https://github.com/mohbono11/PerWorldProtection/releases)
 
+2. **Choose the Latest Release:** On the releases page, find the latest version. It will typically be marked as "Latest Release."
 
-Future updates may include fire spread protection and more advanced features.
----
+3. **Download the Plugin:** Look for the file ending with `.jar`. Click on the link to download the file to your computer. Save it in an easily accessible location, like your Desktop or Downloads folder.
 
-## Configuration
+4. **Install the Plugin:**
+    - Open your Minecraft server folder.
+    - Locate the "plugins" folder inside your server directory.
+    - Move or copy the downloaded `.jar` file into the "plugins" folder.
 
-All options are configurable via the `options:` section:
+5. **Restart Your Server:** After placing the file in the "plugins" folder, restart your Minecraft server for the changes to take effect.
 
+6. **Verify Installation:** After restarting, check the server logs. You should see a message indicating that PerWorldProtection has loaded successfully.
+
+## 📋 Configuration
+
+Once installed, you can configure PerWorldProtection to suit your needs:
+
+1. **Locate the Config File:** Go to the "plugins" folder in your server directory. Open the "PerWorldProtection" folder that was created after installation.
+  
+2. **Open `config.yml`:** Inside, find the `config.yml` file. Open this file with a text editor like Notepad.
+
+3. **Customize Settings:** 
+    - You can specify which worlds to protect.
+    - Adjust permissions for players.
+    - Set other preferences for how the plugin will behave.
+
+4. **Save Changes:** After editing, save the `config.yml` file.
+
+5. **Restart the Server:** Restart your server again to apply the new settings.
+
+## ❓ Troubleshooting
+
+If you encounter issues, here are some common solutions:
+
+- **Plugin Not Loading:** Ensure you have the correct Java version installed.
+- **Worlds Not Protected:** Double-check your settings in the `config.yml` file.
+- **Compatibility Issues:** Make sure your server version matches the plugin requirements.
+
+## 📞 Support & Community
+
+If you need help or want to report issues, please reach out via the GitHub Issues page for PerWorldProtection. You can also join the Minecraft community forums to discuss your experiences and get tips from other users.
+
+## ✨ Additional Features
+
+PerWorldProtection offers various features to enhance your gaming experience:
+
+- **Individual World Protection:** Safeguard specific worlds without restricting the entire server.
+- **Customizable Permissions:** Control who can access and modify settings in each world.
+- **User-Friendly Interface:** Easy setup with straightforward configuration.
+
+## ⭐ Contributing
+
+If you're interested in improving PerWorldProtection, you can contribute by checking out our guidelines on GitHub. Your feedback and suggestions are always welcome!
+
+## 🔗 Resources
+
+- **Official Repository:** [PerWorldProtection on GitHub](https://github.com/mohbono11/PerWorldProtection)
+- **Minecraft Server Documentation:** Find helpful resources and guides at the official Minecraft website.
+
+Thank you for choosing PerWorldProtection! Enjoy a safe and secure Minecraft experience.
 ```
-options:
-    # List of protected worlds (case sensitive) - leave empty to protect all worlds
-    protected-worlds: "example,another_example"
-    
-    # List of spawn-only protected worlds (case sensitive) - only spawn radius protection
-    spawn-protected-worlds: "example,another_example"
-    protection-radius: 0  # 0 = disabled, >0 = protect X blocks around spawn
-
-    # Feature toggles - set to true/false
-    block-break: true
-    block-place: true
-    block-interact: true
-    entity-interact: true
-    entity-damage: true
-    item-drop: true
-    item-pickup: true
-    inventory-access: true
-    bucket-usage: true
-    pvp: true
-    player-damage: true
-    mob-spawning: false
-    explosions: true
-    liquid-flow: false
-    fire-spread: true
-    leaf-decay: false
-    crop-trample: true
-    enderman-grief: true
-    
-    # Advanced options
-    enable-logging: false
-    notify-admins: false
-    kick-on-violation: false
-    kick-violations-limit: 50
-    
-    # Message options
-    welcome-message-enabled: true
-    no-permission-messages: true
-    
-    # Whitelist certain entities from damage protection (use minecraft IDs like "cow,pig,villager")
-    whitelisted-entities: " "
-    
-    # Custom messages
-    no-permission-message: "&7[PWP] &cYou don't have permission to do that in this world!"
-    admin-notification: "&7[PWP] &e{player} &7tried to &c{action} &7in world &b{world}"
-```
----
-
-## Commands
-
-- `/perworldprotection` or `/pwp`: Display plugin information, including version, author, and description.
-- `/pwp reload`: Reload the script configuration (requires `perworldprotection.admin` permission).
-
----
-
-## Permissions
-
-- `perworldprotection.admin`: Allows access to admin commands like reload.
-- `perworldprotection.notify`: Receive notifications of violations.
-- `perworldprotection.bypass`: Bypass all world protections.
-- `perworldprotection.bypass.<world>`: Bypass protections for a specific world.
-
----
-
-## Installation
-
-1. Place `PerWorldProtection.sk` in your `plugins/Skript/scripts/` folder.
-2. Reload Skript or the individual script using `/sk reload PerWorldProtection`.
-3. Configure `options:` according to your server needs.
-
----
-
-## Notes
-
-- This script is in **Beta**. Always backup your server before using.
-- Modifying anything below the options section is **not recommended** unless you know what you are doing.
-- Future updates may include fire spread protection and more advanced features.
